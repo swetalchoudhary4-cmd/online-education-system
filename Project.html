@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Online Education System</title>
+
+<style>
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #eef2f3;
+}
+
+/* HEADER */
+header {
+    background: #2c3e50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+/* NAV */
+nav {
+    background: #34495e;
+    padding: 10px;
+    text-align: center;
+    display: none;
+}
+
+nav a {
+    color: white;
+    margin: 15px;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.container {
+    padding: 20px;
+}
+
+/* BOX */
+.box {
+    background: white;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px gray;
+}
+
+.login-box {
+    width: 300px;
+    margin: 80px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 5px;
+}
+
+button {
+    padding: 10px;
+    width: 100%;
+    background: #27ae60;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.logout {
+    background: red;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Online Education System</h1>
+</header>
+
+<div id="loginPage" class="login-box">
+    <h2>Login</h2>
+    <input type="text" id="user" placeholder="Username">
+    <input type="password" id="pass" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <p onclick="registerUser()" style="cursor:pointer;color:blue;">
+        New User? Register
+    </p>
+</div>
+<button onclick="toggleMode()" id="modeBtn"> Dark Mode</button>
+
+<script>
+let darkModeOn = false;
+
+function toggleMode() {
+
+    if (darkModeOn == false) {
+
+        
+        document.body.style.background = "black";
+        document.body.style.color = "white";
+
+        document.querySelector("header").style.background = "#111";
+        document.querySelector("nav").style.background = "#222";
+
+        let boxes = document.querySelectorAll(".box");
+
+        boxes.forEach(box => {
+            box.style.background = "#333";
+            box.style.color = "white";
+        });
+
+        document.getElementById("modeBtn").innerHTML = " White Mode";
+
+        darkModeOn = true;
+
+    } else {
+
+        document.body.style.background = "#eef2f3";
+        document.body.style.color = "black";
+
+        document.querySelector("header").style.background = "#2c3e50";
+        document.querySelector("nav").style.background = "#34495e";
+
+        let boxes = document.querySelectorAll(".box");
+
+        boxes.forEach(box => {
+            box.style.background = "white";
+            box.style.color = "black";
+        });
+
+        document.getElementById("modeBtn").innerHTML = " Dark Mode";
+
+        darkModeOn = false;
+    }
+}
+</script>
+    
+<nav id="navBar">
+    <a href="#" onclick="showPage('home')">Home</a>
+    <a href="#" onclick="showPage('courses')">Courses</a>
+    <a href="#" onclick="showPage('quiz')">Quiz</a>
+    <a href="#" onclick="logout()">Logout</a>
+</nav>
+
+
+<div id="home" class="container" style="display:none;">
+    <div class="box">
+        <h2>Welcome Student</h2>
+        <p>This is your Online Education Dashboard.</p>
+    </div>
+</div>
+<div id="courses" class="container" style="display:none;">
+    <div class="box">
+        <h2>Courses</h2>
+        <ul>
+            <li>HTML Basics</li>
+            <li>CSS Styling</li>
+            <li>JavaScript Fundamentals</li>
+            <li>PHP & MySQL (Advanced)</li>
+            <li>Python</li>
+            <li>C Programming</li>
+            <li>DSA </li>
+            <li> Computer Network concepts </li>
+        </ul>
+    </div>
+</div>
+<div id="profile" class="container" style="display:none;">
+    <div class="box">
+        <h2>Student Profile</h2>
+        <img src="student.jpg" width="120">
+        <p>Name: Anshika</p>
+        <p>Course: BCA</p>
+        <p>Email: student@gmail.com</p>
+    </div>
+</div>
+
+<div id="quiz" class="container" style="display:none;">
+    <div class="box">
+        <h2>Simple Quiz</h2>
+
+        <p>Q1: HTML stands for?</p>
+        <button onclick="check(this,'a')">Hyper Text Markup Language</button>
+        <button onclick="check(this,'b')">High Text Machine Language</button>
+        <p>Q2: PHP stands for?</p>
+        <button onclick="check(this,'a')">HyperText Preprocessor Language</button>
+        <button onclick="check(this,'b')">HighText Processor Language</button>
+
+        <p id="result"></p>
+    </div>
+</div>
+
+<script>
+
+function registerUser() {
+    let u = prompt("Create Username");
+    let p = prompt("Create Password");
+    localStorage.setItem("user", u);
+    localStorage.setItem("pass", p);
+    alert("Registered Successfully!");
+}
+
+// LOGIN
+function login() {
+    let u = document.getElementById("user").value;
+    let p = document.getElementById("pass").value;
+
+    let su = localStorage.getItem("user");
+    let sp = localStorage.getItem("pass");
+
+    if (u === su && p === sp) {
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("navBar").style.display = "block";
+        showPage('home');
+    } else {
+        alert("Invalid Login!");
+    }
+}
+
+
+function showPage(page) {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("courses").style.display = "none";
+    document.getElementById("quiz").style.display = "none";
+
+    document.getElementById(page).style.display = "block";
+}
+
+
+function check(btn, ans) {
+    if (btn.innerText.includes("Hyper")) {
+        document.getElementById("result").innerHTML = "✅ Correct Answer";
+    } else {
+        document.getElementById("result").innerHTML = "❌ Wrong Answer";
+    }
+}
+
+
+function logout() {
+    location.reload();
+}
+</script>
+
+</body>
+</html>
